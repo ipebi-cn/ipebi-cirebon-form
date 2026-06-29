@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Form Laporan Kegiatan IPEBI Cirebon – Semester 1 2026</title>
+<style>
+:root {
+  --blue: #1B3F6E;
+  --blue2: #2D5A9B;
+  --red: #C0392B;
+  --gold: #B8860B;
+  --green: #16A34A;
+  --bg: #F7F8FA;
+  --card: #FFFFFF;
+  --border: #DDE1E9;
+  --text: #1A1A2E;
+  --muted: #6B7280;
+  --radius: 12px;
+  --shadow: 0 2px 12px rgba(0,0,0,0.08);
+
+  /* Pilar warna */
+  --berkembang: #1B3F6E;
+  --berdampak: #C0392B;
+  --bergerak: #B8860B;
+
+  /* Konkin warna */
+  --kejora: #0D7C3E;
+  --obf: #7B3FA0;
+  --paskeun: #1565C0;
+  --treeh: #2E7D32;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); padding-bottom: 60px; }
+
+/* HEADER */
+.header {
+  background: linear-gradient(135deg, #1B3F6E 0%, #2D5A9B 60%, #3B6CB8 100%);
+  color: white; padding: 28px 20px 24px; text-align: center; position: relative; overflow: hidden;
+}
+.header::before {
+  content:''; position:absolute; top:-40px; right:-40px;
+  width:180px; height:180px; border-radius:50%; background:rgba(255,255,255,0.06);
+}
+.header-logos { display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
+.logo-badge {
+  background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3);
+  border-radius:7px; padding:5px 10px; font-size:10px; font-weight:700; letter-spacing:.5px; text-transform:uppercase;
+}
+.header h1 { font-size:20px; font-weight:800; letter-spacing:-.3px; margin-bottom:5px; }
+.header p { font-size:12px; opacity:.8; }
+
+/* PILLAR BAR */
+.pillar-bar { display:flex; border-bottom:1px solid var(--border); }
+.pillar { flex:1; padding:9px 6px; text-align:center; font-size:10px; font-weight:700; letter-spacing:.3px; text-transform:uppercase; color:white; }
+.pillar.berkembang { background:var(--berkembang); }
+.pillar.berdampak  { background:var(--berdampak); }
+.pillar.bergerak   { background:var(--bergerak); }
+
+/* CONTAINER */
+.container { max-width:680px; margin:0 auto; padding:20px 14px; }
+.section-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:10px; padding-left:2px; }
+
+/* CARD */
+.card { background:var(--card); border-radius:var(--radius); border:1px solid var(--border); padding:18px; margin-bottom:14px; box-shadow:var(--shadow); }
+
+label { display:block; font-size:13px; font-weight:600; color:var(--text); margin-bottom:5px; }
+label .req { color:#E53E3E; margin-left:2px; }
+label .hint { font-weight:400; color:var(--muted); font-size:11px; display:block; margin-top:2px; }
+
+input[type="text"], input[type="date"], input[type="number"], select, textarea {
+  width:100%; padding:9px 11px; border:1.5px solid var(--border); border-radius:8px;
+  font-size:14px; font-family:inherit; color:var(--text); background:#FAFAFA;
+  transition:border-color .2s, box-shadow .2s; margin-bottom:12px; appearance:none;
+}
+input:focus, select:focus, textarea:focus {
+  outline:none; border-color:var(--blue); box-shadow:0 0 0 3px rgba(27,63,110,.1); background:white;
+}
+textarea { resize:vertical; min-height:75px; }
+
+/* AUTOCOMPLETE */
+.autocomplete-wrap { position:relative; margin-bottom:12px; }
+.autocomplete-wrap input { margin-bottom:0; }
+.autocomplete-list {
+  position:absolute; top:100%; left:0; right:0; background:white;
+  border:1.5px solid var(--blue); border-top:none; border-radius:0 0 8px 8px;
+  max-height:200px; overflow-y:auto; z-index:100; display:none;
+}
+.autocomplete-list.open { display:block; }
+.autocomplete-item { padding:9px 13px; font-size:13px; cursor:pointer; border-bottom:1px solid #F0F0F0; }
+.autocomplete-item:hover { background:#EEF4FF; }
+.autocomplete-item .role { color:var(--muted); font-size:11px; display:block; }
+
+.jabatan-display {
+  background:#F0F4FF; border:1.5px solid #BDD0FF; border-radius:8px;
+  padding:9px 13px; font-size:13px; color:var(--blue); font-weight:600;
+  margin-bottom:12px; min-height:38px; display:flex; align-items:center;
+}
+.jabatan-display.empty { color:var(--muted); font-weight:400; font-style:italic; }
+
+/* PILLS */
+.checkbox-group { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:12px; }
+.check-pill {
+  display:flex; align-items:center; gap:5px; background:#F3F4F6;
+  border:1.5px solid var(--border); border-radius:20px; padding:6px 11px;
+  cursor:pointer; font-size:12px; font-weight:500; transition:all .15s; user-select:none;
+}
+.check-pill input[type="checkbox"] { display:none; }
+.check-pill.checked { background:#EEF4FF; border-color:var(--blue); color:var(--blue); font-weight:600; }
+
+.radio-group { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+.radio-pill {
+  display:flex; align-items:center; gap:5px; background:#F3F4F6;
+  border:1.5px solid var(--border); border-radius:20px; padding:7px 13px;
+  cursor:pointer; font-size:13px; font-weight:500; transition:all .15s; user-select:none;
+}
+.radio-pill input { display:none; }
+.radio-pill.selected-yes    { background:#DCFCE7; border-color:#16A34A; color:#15803D; font-weight:700; }
+.radio-pill.selected-no     { background:#FEE2E2; border-color:#DC2626; color:#B91C1C; font-weight:700; }
+.radio-pill.selected-unknown{ background:#FEF9C3; border-color:#CA8A04; color:#92400E; font-weight:700; }
+
+/* =====================
+   KONKIN SECTION
+   ===================== */
+.konkin-section { margin-bottom:12px; }
+.konkin-title {
+  font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.8px;
+  padding:7px 12px; border-radius:7px 7px 0 0; color:white;
+  display:flex; align-items:center; justify-content:space-between; cursor:pointer;
+  user-select:none;
+}
+.konkin-title.kejora  { background:var(--kejora); }
+.konkin-title.obf     { background:var(--obf); }
+.konkin-title.paskeun { background:var(--paskeun); }
+.konkin-title.treeh   { background:var(--treeh); }
+
+.konkin-body {
+  border:1.5px solid var(--border); border-top:none;
+  border-radius:0 0 7px 7px; overflow:hidden;
+}
+
+/* Target description box */
+.konkin-desc {
+  background:#F9FAFB; border-bottom:1px solid var(--border);
+  padding:10px 13px; font-size:11px; color:#374151; line-height:1.6;
+  display:none;
+}
+.konkin-desc.open { display:block; }
+.konkin-desc ul { padding-left:16px; }
+.konkin-desc ul li { margin-bottom:3px; }
+.konkin-desc .desc-header {
+  font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.5px;
+  color:var(--muted); margin-bottom:6px;
+}
+.toggle-desc-btn {
+  background:rgba(255,255,255,0.25); border:1px solid rgba(255,255,255,0.5);
+  border-radius:5px; padding:2px 8px; font-size:10px; color:white;
+  cursor:pointer; white-space:nowrap; font-weight:600;
+}
+
+/* Program chips inside konkin */
+.konkin-programs {
+  display:flex; flex-wrap:wrap; gap:6px; padding:10px 12px;
+}
+.k-chip {
+  padding:5px 11px; border-radius:14px; font-size:12px; font-weight:500;
+  cursor:pointer; border:1.5px solid transparent; background:#F3F4F6;
+  transition:all .15s; user-select:none;
+}
+.k-chip:hover { opacity:.8; }
+.k-chip.sel-kejora  { background:#E8F5E9; border-color:var(--kejora);  color:var(--kejora);  font-weight:700; }
+.k-chip.sel-obf     { background:#F3E8FF; border-color:var(--obf);     color:var(--obf);     font-weight:700; }
+.k-chip.sel-paskeun { background:#E3F2FD; border-color:var(--paskeun); color:var(--paskeun); font-weight:700; }
+.k-chip.sel-treeh   { background:#E8F5E9; border-color:var(--treeh);   color:var(--treeh);   font-weight:700; }
+
+/* =====================
+   GROW PILLARS
+   ===================== */
+.grow-pillar-group { margin-bottom:8px; }
+.grow-pillar-title {
+  font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.8px;
+  padding:6px 10px; border-radius:6px 6px 0 0; color:white;
+}
+.grow-pillar-title.berkembang { background:var(--berkembang); }
+.grow-pillar-title.berdampak  { background:var(--berdampak); }
+.grow-pillar-title.bergerak   { background:var(--bergerak); }
+.grow-options {
+  display:flex; flex-wrap:wrap; gap:6px; padding:10px;
+  border:1.5px solid var(--border); border-top:none; border-radius:0 0 6px 6px; background:white;
+}
+.grow-chip {
+  padding:5px 11px; border-radius:14px; font-size:12px; font-weight:500;
+  cursor:pointer; border:1.5px solid transparent; background:#F3F4F6; transition:all .15s; user-select:none;
+}
+.grow-chip.selected-berkembang { background:#EEF4FF; border-color:var(--berkembang); color:var(--berkembang); font-weight:700; }
+.grow-chip.selected-berdampak  { background:#FFF0EE; border-color:var(--berdampak);  color:var(--berdampak);  font-weight:700; }
+.grow-chip.selected-bergerak   { background:#FFFBEA; border-color:var(--bergerak);   color:var(--bergerak);   font-weight:700; }
+
+/* ACTIVITY BLOCK */
+.activity-block { background:white; border:1.5px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:14px; }
+.activity-header {
+  background:linear-gradient(90deg, #1B3F6E, #2D5A9B); color:white;
+  padding:11px 15px; display:flex; justify-content:space-between; align-items:center;
+}
+.activity-header span { font-size:13px; font-weight:700; }
+.remove-btn {
+  background:rgba(255,255,255,0.2); border:none; color:white; border-radius:6px;
+  padding:3px 9px; font-size:12px; cursor:pointer;
+}
+.remove-btn:hover { background:rgba(255,0,0,.3); }
+.activity-body { padding:15px; }
+
+/* UPLOAD */
+.upload-area {
+  border:2px dashed var(--border); border-radius:10px; padding:18px 14px;
+  text-align:center; cursor:pointer; background:#FAFAFA; transition:all .2s; margin-bottom:8px;
+}
+.upload-area:hover { border-color:var(--blue); background:#EEF4FF; }
+.upload-area.has-files { border-color:var(--green); background:#F0F9F4; }
+.upload-icon { font-size:22px; margin-bottom:5px; }
+.upload-text { font-size:13px; font-weight:600; color:var(--blue); }
+.upload-sub  { font-size:11px; color:var(--muted); margin-top:3px; }
+.file-list { display:flex; flex-direction:column; gap:5px; margin-bottom:12px; }
+.file-item {
+  display:flex; align-items:center; justify-content:space-between;
+  background:#F0F9F4; border:1px solid #BBF7D0; border-radius:7px; padding:7px 11px; font-size:12px;
+}
+.file-item .file-name { font-weight:600; color:#15803D; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.file-item .file-size { color:var(--muted); margin-left:6px; white-space:nowrap; }
+.file-item .file-remove { background:none; border:none; color:#DC2626; cursor:pointer; font-size:13px; margin-left:6px; }
+.file-error { background:#FEE2E2; border:1px solid #FCA5A5; border-radius:7px; padding:7px 11px; font-size:12px; color:#B91C1C; margin-bottom:5px; }
+
+/* DIVIDER */
+.divider { border:none; border-top:1px solid var(--border); margin:14px 0; }
+
+/* BUTTONS */
+.btn-add {
+  width:100%; padding:11px; background:white; border:2px dashed var(--blue);
+  border-radius:var(--radius); color:var(--blue); font-size:14px; font-weight:600;
+  cursor:pointer; transition:all .15s; margin-bottom:18px;
+}
+.btn-add:hover { background:#EEF4FF; }
+.btn-submit {
+  width:100%; padding:15px; background:linear-gradient(135deg, var(--blue), var(--blue2));
+  color:white; border:none; border-radius:var(--radius); font-size:16px;
+  font-weight:700; cursor:pointer; transition:opacity .2s;
+}
+.btn-submit:hover { opacity:.9; }
+
+/* SETUP BANNER */
+.setup-banner {
+  background:#FFFBEB; border:1.5px solid #FCD34D; border-radius:var(--radius);
+  padding:14px 16px; margin-bottom:16px; font-size:12px; color:#92400E;
+}
+.setup-banner strong { display:block; font-size:13px; margin-bottom:6px; color:#78350F; }
+.setup-banner ol { padding-left:16px; line-height:1.8; }
+.setup-banner code { background:#FEF3C7; padding:1px 5px; border-radius:4px; font-family:monospace; font-size:11px; }
+
+.no-kegiatan-msg { display:none; background:#FFF9E6; border:1px solid #F6D860; border-radius:8px; padding:11px 14px; font-size:13px; color:#854D0E; margin-bottom:14px; }
+
+/* JABATAN PICKER — hanya muncul untuk anggota multi-jabatan */
+.jabatan-picker {
+  background:#FFF8E1; border:1.5px solid #FBC02D; border-radius:8px;
+  padding:12px 14px; margin-bottom:12px; animation: fadeIn .2s ease;
+}
+.jabatan-picker-label {
+  font-size:12px; font-weight:700; color:#795548; margin-bottom:10px;
+}
+.jabatan-option {
+  display:flex; align-items:flex-start; gap:10px;
+  padding:9px 11px; border-radius:7px; cursor:pointer;
+  border:1.5px solid transparent; margin-bottom:6px; background:white;
+  font-size:13px; transition:all .15s; user-select:none;
+}
+.jabatan-option:last-child { margin-bottom:0; }
+.jabatan-option input[type="radio"] { margin-top:2px; accent-color:var(--blue); flex-shrink:0; }
+.jabatan-option:hover { background:#EEF4FF; border-color:#BDD0FF; }
+.jabatan-option:has(input:checked) {
+  background:#EEF4FF; border-color:var(--blue); font-weight:600; color:var(--blue);
+}
+@keyframes fadeIn { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:translateY(0); } }
+
+@media(max-width:480px) {
+  .header h1 { font-size:17px; }
+  .pillar { font-size:9px; padding:7px 3px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logos">
+    <div class="logo-badge">IPEBI</div>
+    <div class="logo-badge">KPw BI Cirebon</div>
+    <div class="logo-badge">GROW 2026</div>
+  </div>
+  <h1>Laporan Kegiatan Semester 1 · 2026</h1>
+  <p>IKATAN PEGAWAI BANK INDONESIA — KOMISARIAT CIREBON</p>
+</div>
+
+<div class="pillar-bar">
+  <div class="pillar berkembang">🏙 Berkembang</div>
+  <div class="pillar berdampak">🤝 Berdampak</div>
+  <div class="pillar bergerak">⚡ Bergerak</div>
+</div>
+
+<div class="container">
+
+  <!-- SETUP BANNER -->
+  <div class="setup-banner" id="setup-banner">
+    <strong>⚙️ Setup Google Drive (lakukan sekali sebelum disebar)</strong>
+    Untuk menyimpan data ke Google Sheets dan file ke Google Drive:<br>
+    1. Buka <code>script.google.com</code> → New Project<br>
+    2. Copy kode Apps Script dari file <code>apps_script_backend.gs</code> yang disertakan<br>
+    3. Deploy → Web App → Anyone → Copy URL<br>
+    4. Tempel URL ke variabel <code>APPS_SCRIPT_URL</code> di bawah (baris ~580)<br>
+    5. Hapus banner ini dari HTML setelah selesai
+    <br><br>
+    <a href="#" onclick="document.getElementById('setup-banner').style.display='none'; return false;" style="color:#78350F; font-weight:700;">✕ Tutup banner ini</a>
+  </div>
+
+  <!-- IDENTITAS -->
+  <div class="section-label">01 — Identitas Pelapor</div>
+  <div class="card">
+    <label>Nama Pegawai <span class="req">*</span>
+      <span class="hint">Ketik nama untuk mencari</span>
+    </label>
+    <div class="autocomplete-wrap">
+      <input type="text" id="nama-input" placeholder="Cari nama..." autocomplete="off">
+      <div class="autocomplete-list" id="nama-list"></div>
+    </div>
+    <label>Jabatan / Peran di IPEBI
+      <span class="hint">Terisi otomatis setelah memilih nama</span>
+    </label>
+    <div class="jabatan-display empty" id="jabatan-display">— Pilih nama terlebih dahulu —</div>
+  </div>
+
+  <!-- ADA KEGIATAN? -->
+  <div class="section-label">02 — Kegiatan Semester 1 (Jan – Jun 2026)</div>
+  <div class="card">
+    <label>Apakah ada kegiatan IPEBI yang kamu ikuti atau koordinasikan selama Semester 1 2026? <span class="req">*</span></label>
+    <div class="radio-group">
+      <label class="radio-pill" id="pill-ya">
+        <input type="radio" name="ada_kegiatan" value="ya" onchange="toggleKegiatan('ya')">
+        ✅ Ya, ada kegiatan
+      </label>
+      <label class="radio-pill" id="pill-tidak">
+        <input type="radio" name="ada_kegiatan" value="tidak" onchange="toggleKegiatan('tidak')">
+        ❌ Tidak ada / Tidak ingat
+      </label>
+    </div>
+    <div class="no-kegiatan-msg" id="no-kegiatan-msg">
+      Terima kasih. Catatan kamu tetap berguna untuk data partisipasi. Langsung submit di bawah.
+    </div>
+  </div>
+
+  <!-- DAFTAR KEGIATAN -->
+  <div id="kegiatan-section" style="display:none;">
+    <div id="kegiatan-list"></div>
+    <button class="btn-add" onclick="addKegiatan()">＋ Tambah Kegiatan Lain</button>
+  </div>
+
+  <button class="btn-submit" onclick="submitForm()">Kirim Laporan →</button>
+
+</div><!-- /container -->
+
+<script>
+// ============================================================
+// GANTI INI dengan URL dari Google Apps Script setelah deploy
+// ============================================================
+const APPS_SCRIPT_URL = ""; // contoh: "https://script.google.com/macros/s/XXXXX/exec"
+
+// ============================================================
+// DATA ANGGOTA
+// ============================================================
+const ANGGOTA = [
+  // ── PEMBINA ──
+  { nama: "Wihujeng Ayu Rengganis",  jabatan: "Pembina (Kepala KPw BI Cirebon)" },
+  { nama: "Fickry Widya Nugraha",    jabatan: "Pembina" },
+  { nama: "Himawan Putranto",        jabatan: "Pembina" },
+
+  // ── PENGURUS INTI ──
+  { nama: "M. Harun Al Rasyid",      jabatan: "Ketua IPEBI Komisariat Cirebon" },
+  { nama: "Damianus Deny K.",        jabatan: "Wakil Ketua IPEBI Komisariat Cirebon" },
+  { nama: "Arie Andira Ferdiana",    jabatan: "Sekretaris / Koordinator KEJORA" },
+  { nama: "M. Fikrisani",            jabatan: "Sekretaris" },
+  { nama: "Novan Sutanto",           jabatan: "Bendahara / Koordinator PASKEUN" },
+  { nama: "Fitri Yanti",             jabatan: "Bendahara" },
+
+  // ── KOORDINATOR KEJORA — Sub 1: GERAK BUGAR ──
+  // Sub-Koordinator
+  { nama: "Aan Triandana",           jabatan: "KEJORA · Sub-Koordinator Gerak Bugar · Sepak Bola & Futsal" },
+  // i Sepak Bola & Futsal
+  { nama: "Bagus Maulana",           jabatan: "KEJORA · Gerak Bugar · Sepak Bola & Futsal" },
+  { nama: "Dadang Darmawan",         jabatan: "KEJORA · Gerak Bugar · Sepak Bola & Futsal" },
+  // ii Bulu Tangkis
+  { nama: "Agus Umar Akmad",         jabatan: "KEJORA · Gerak Bugar · Bulu Tangkis" },
+  // iii Sepeda
+  { nama: "Budi Aryanto",            jabatan: "KEJORA · Gerak Bugar · Sepeda" },
+  // iv Tenis Lapang & Tenis Meja
+  { nama: "Kadmani",                 jabatan: "KEJORA · Gerak Bugar · Tenis Lapang & Tenis Meja" },
+  // v Basket
+  { nama: "Ali Shobri",              jabatan: "KEJORA · Gerak Bugar · Basket" },
+  // vi Senam & Body Wellness
+  { nama: "Egi Migrawanto",          jabatan: "KEJORA · Gerak Bugar · Senam & Body Wellness" },
+  { nama: "Astri Sekar Palupi",      jabatan: "KEJORA · Gerak Bugar · Senam & Body Wellness" },
+  // viii Memancing
+  { nama: "Teguh Sukmara",           jabatan: "KEJORA · Gerak Bugar · Memancing" },
+  { nama: "Ivan M. L.",              jabatan: "KEJORA · Gerak Bugar · Memancing" },
+  // viii E-Sport
+  { nama: "Budi Isnianto",           jabatan: "KEJORA · Gerak Bugar · E-Sport" },
+  // ix Musik Band
+  { nama: "Roni N. B.",              jabatan: "KEJORA · Gerak Bugar · Musik Band" },
+  // x Tari & Musik Tradisional
+  { nama: "Endah Wulan",             jabatan: "KEJORA · Gerak Bugar · Tari & Musik Tradisional" },
+  // xi Running — Aan Triandana juga di sini (sudah masuk atas)
+
+  // ── KOORDINATOR KEJORA — Sub 2: GERAK HIJAU ──
+  // Sub-Koordinator
+  { nama: "M. A. Septianto",         jabatan: "KEJORA · Sub-Koordinator Gerak Hijau · Pencinta Alam & Green Initiatives" },
+  // i Pencinta Alam
+  { nama: "Yayat Ruhiyat",           jabatan: "KEJORA · Gerak Hijau · Pencinta Alam" },
+  // ii Green Initiatives
+  // M. A. Septianto sudah masuk atas
+  // iii Touring
+  { nama: "Ajie Badayasa",           jabatan: "KEJORA · Gerak Hijau · Touring" },
+  { nama: "Eky Syaiful B.",          jabatan: "KEJORA · Gerak Hijau · Green Initiatives" },
+
+  // ── KOORDINATOR OBF ──
+  { nama: "Damianus Deny K.",        jabatan: "Wakil Ketua / Koordinator OBF" },
+  // i Kerohanian
+  { nama: "Nurkholis",               jabatan: "OBF · Kerohanian" },
+  { nama: "Dadang Darmawan",         jabatan: "OBF · Kerohanian" },
+  // ii Sosial
+  { nama: "M. Firmansyah",           jabatan: "OBF · Sosial" },
+  // iii Kebersamaan
+  { nama: "Nada Dinda Rynaldi",      jabatan: "OBF · Kebersamaan" },
+  { nama: "Wayan Sri Widhiastuti",   jabatan: "OBF · Kebersamaan" },
+
+  // ── KOORDINATOR PASKEUN ──
+  // Koordinator: Novan Sutanto (sudah masuk atas)
+  // i Pendidikan & Pelatihan
+  { nama: "Suradiyono",              jabatan: "PASKEUN · Pendidikan & Pelatihan" },
+  { nama: "Rizka Sudarno",           jabatan: "PASKEUN · Pendidikan & Pelatihan" },
+  // ii Kesejahteraan
+  { nama: "Chaidir Achmad",          jabatan: "PASKEUN · Kesejahteraan" },
+  { nama: "Julius Aprilian",         jabatan: "PASKEUN · Kesejahteraan" },
+
+  // ── KOORDINATOR SINERGI ──
+  { nama: "Norman Yudha G.",         jabatan: "Koordinator SINERGI / Lead Inovasi BPR" },
+  // i Publikasi
+  { nama: "Alvita Rachma Devi",      jabatan: "SINERGI · Publikasi" },
+  // ii Hubungan Antar Asosiasi
+  { nama: "Yuniar Dwi N.",           jabatan: "SINERGI · Hubungan Antar Asosiasi" },
+  { nama: "Affan Irhamsyah",         jabatan: "SINERGI · Hubungan Antar Asosiasi" },
+  { nama: "Abid Badrussalam",        jabatan: "SINERGI · Hubungan Antar Asosiasi" },
+  { nama: "Dadang Usnadi",           jabatan: "SINERGI · Hubungan Antar Asosiasi" },
+];
+// Build multi-jabatan map: { "Nama": ["jabatan1", "jabatan2"] }
+const ANGGOTA_MULTI = {};
+ANGGOTA.forEach(a => {
+  if (!ANGGOTA_MULTI[a.nama]) ANGGOTA_MULTI[a.nama] = [];
+  if (!ANGGOTA_MULTI[a.nama].includes(a.jabatan)) ANGGOTA_MULTI[a.nama].push(a.jabatan);
+});
+const ANGGOTA_NAMES = Object.keys(ANGGOTA_MULTI);
+
+// ============================================================
+// KONKIN DATA — program + target dari dokumen
+// ============================================================
+const KONKIN = {
+  kejora: {
+    label: "🌟 KEJORA — Kegiatan Olahraga & Jasmani",
+    color: "kejora",
+    pilar: "BERGERAK",
+    target: [
+      "≥70% pegawai aktif melakukan aktivitas fisik",
+      "≥2 kegiatan komunitas (olahraga, keagamaan) per minggu",
+      "Tracking BMI & Berat Badan berkala",
+      "Branding Pimpinan sebagai Role Model Gerak Bugar",
+      "Apresiasi pegawai/komunitas ter-aktif",
+    ],
+    programs: [
+      { id: "sepakbola_futsal", label: "Sepak Bola & Futsal" },
+      { id: "bulu_tangkis",    label: "Bulu Tangkis" },
+      { id: "sepeda",          label: "Sepeda" },
+      { id: "tenis",           label: "Tenis Lapang & Meja" },
+      { id: "basket",          label: "Basket" },
+      { id: "senam_wellness",  label: "Senam & Body Wellness" },
+      { id: "memancing",       label: "Memancing" },
+      { id: "esport",          label: "E-Sport" },
+      { id: "musik_band",      label: "Musik Band" },
+      { id: "tari_tradisional",label: "Tari & Musik Tradisional" },
+      { id: "running",         label: "Running" },
+      { id: "syahdu",          label: "SYAHDU / Mental Health" },
+    ],
+  },
+  obf: {
+    label: "💜 OBF — One Big Family (Kebersamaan & Sosial)",
+    color: "obf",
+    pilar: "BERDAMPAK",
+    target: [
+      "Kumpul Sedulur setiap bulan (minimal 1x/bulan)",
+      "Monitoring kehadiran & keterwakilan lintas unit kerja",
+      "Log Matur Kesuwun: daftar apresiasi antar pegawai",
+      "Rekap Internal Charity (SBS): penerima, nominal/jenis bantuan",
+      "Rotasi host antar unit kerja setiap bulan",
+      "Champion of Collaboration (CoC) setiap triwulan",
+    ],
+    programs: [
+      { id: "kumpul_sedulur",  label: "Kumpul Sedulur" },
+      { id: "matur_kesuwun",   label: "Matur Kesuwun (Apresiasi)" },
+      { id: "sbs_charity",     label: "SBS — Sedulur Bantu Sedulur" },
+      { id: "kerohanian",      label: "Kegiatan Kerohanian" },
+      { id: "kebersamaan",     label: "Kebersamaan / Team Bonding" },
+      { id: "rembuk_sinergi",  label: "Rembuk Sinergi / Talkshow BPR" },
+      { id: "dampak_literasi", label: "Dampak Literasi (Pustaloka / Kelas Inspiratif)" },
+    ],
+  },
+  paskeun: {
+    label: "📘 PASKEUN — Pendidikan, Pelatihan & Kesejahteraan",
+    color: "paskeun",
+    pilar: "BERKEMBANG + BERGERAK",
+    target: [
+      "Kelas serial literasi keuangan minimal 1x/bulan",
+      "Kolaborasi 4–5 Certified Financial Planner (CFP)",
+      "Checklist perencanaan keuangan dasar tiap peserta",
+      "Kategorisasi pegawai sesuai profil keuangan",
+      "Edukasi mandiri via platform investingmom.id",
+      "Kegiatan pendidikan & pelatihan kompetensi pegawai",
+    ],
+    programs: [
+      { id: "literasi_keuangan",  label: "Literasi Keuangan (GERAK PORTOFOLIO)" },
+      { id: "cfp_coaching",       label: "CFP Coaching / Pendampingan" },
+      { id: "kelas_kompetensi",   label: "Kelas Kompetensi / Pelatihan" },
+      { id: "serabi",             label: "SERABI / KUM Mengajar" },
+      { id: "litera_bins",        label: "LMS LITERA / LMS BINS" },
+      { id: "kembang_karir",      label: "Kembang Karir / Penugasan Strategis" },
+    ],
+  },
+  treeh: {
+    label: "🌿 3H — Hemat Energi, Hijau, Jaga Alam",
+    color: "treeh",
+    pilar: "BERGERAK",
+    target: [
+      "10 aksi hijau satker per tahun",
+      "Minimal 3x kolaborasi kegiatan lingkungan per tahun",
+      "50% anggota berkontribusi dalam wakaf hijau QRIS",
+      "Aksi hemat energi & pengurangan plastik mingguan",
+      "Kolaborasi mangrove / penanaman pohon / zero waste",
+      "IPEBI Green Waqf: wakaf bibit pohon kopi bersama MPIG Buana Ciremai",
+    ],
+    programs: [
+      { id: "aksi_hijau",      label: "Aksi Hijau Harian / Mingguan" },
+      { id: "hemat_energi",    label: "Hemat Energi / Kurangi Plastik" },
+      { id: "mangrove_pohon",  label: "Mangrove / Penanaman Pohon" },
+      { id: "zero_waste",      label: "Zero Waste" },
+      { id: "wakaf_hijau",     label: "IPEBI Green Waqf / Wakaf Hijau QRIS" },
+      { id: "touring_alam",    label: "Touring / Pencinta Alam" },
+    ],
+  },
+};
+
+// ============================================================
+// GROW PILAR DATA
+// ============================================================
+const GROW_PROGRAMS = {
+  berkembang: [
+    { id: "kembang_karir",     label: "Kembang Karir" },
+    { id: "kembang_kompetensi",label: "Kembang Kompetensi" },
+    { id: "serabi_kum",        label: "SERABI / KUM Mengajar" },
+    { id: "litera_bins",       label: "LMS LITERA / LMS BINS" },
+  ],
+  berdampak: [
+    { id: "dampak_harmoni",   label: "Dampak Harmoni (Kumpul Sedulur)" },
+    { id: "matur_kesuwun",    label: "Matur Kesuwun / SBS" },
+    { id: "dampak_sinergi",   label: "Dampak Sinergi (Rembuk Sinergi)" },
+    { id: "dampak_literasi",  label: "Dampak Literasi (Pustaloka)" },
+    { id: "bpr_inovasi",      label: "Inovasi BPR / CoC" },
+  ],
+  bergerak: [
+    { id: "gerak_bugar",      label: "Gerak Bugar (Olahraga)" },
+    { id: "syahdu",           label: "SYAHDU / Mental Health" },
+    { id: "gerak_hijau",      label: "Gerak Hijau (3H)" },
+    { id: "wakaf_hijau",      label: "Wakaf Hijau QRIS" },
+    { id: "gerak_portofolio", label: "Gerak Portofolio (Literasi Keuangan)" },
+  ],
+};
+
+// ============================================================
+// AUTOCOMPLETE
+// ============================================================
+const namaInput   = document.getElementById("nama-input");
+const namaList    = document.getElementById("nama-list");
+const jabatanDisp = document.getElementById("jabatan-display");
+
+namaInput.addEventListener("input", function() {
+  const q = this.value.toLowerCase().trim();
+  namaList.innerHTML = "";
+  if (q.length < 1) { namaList.classList.remove("open"); return; }
+  const matches = ANGGOTA_NAMES.filter(n => n.toLowerCase().includes(q)).slice(0, 8);
+  if (!matches.length) { namaList.classList.remove("open"); return; }
+  matches.forEach(nama => {
+    const jabatans = ANGGOTA_MULTI[nama];
+    const item = document.createElement("div");
+    item.className = "autocomplete-item";
+    item.innerHTML = `${nama}<span class="role">${jabatans.length > 1 ? jabatans.length + " jabatan" : jabatans[0]}</span>`;
+    item.onclick = () => handleNamaSelect(nama);
+    namaList.appendChild(item);
+  });
+  namaList.classList.add("open");
+});
+document.addEventListener("click", e => {
+  if (!e.target.closest(".autocomplete-wrap") && !e.target.closest(".jabatan-picker")) {
+    namaList.classList.remove("open");
+  }
+});
+
+function handleNamaSelect(nama) {
+  namaInput.value = nama;
+  namaList.classList.remove("open");
+  // Remove existing picker
+  document.querySelectorAll(".jabatan-picker").forEach(el => el.remove());
+
+  const jabatans = ANGGOTA_MULTI[nama];
+  if (jabatans.length === 1) {
+    // Single jabatan — langsung set
+    jabatanDisp.textContent = jabatans[0];
+    jabatanDisp.className = "jabatan-display";
+    return;
+  }
+
+  // Multi jabatan — reset display dan tampilkan picker
+  jabatanDisp.innerHTML = '<span style="font-style:italic; color:#6B7280; font-weight:400;">Pilih jabatan di bawah ↓</span>';
+  jabatanDisp.className = "jabatan-display empty";
+
+  const picker = document.createElement("div");
+  picker.className = "jabatan-picker";
+  picker.innerHTML = `
+    <div class="jabatan-picker-label">⚠️ ${nama} memiliki ${jabatans.length} jabatan. Pilih yang relevan:</div>
+    ${jabatans.map((j, i) => `
+      <label class="jabatan-option" id="jpick_${i}">
+        <input type="radio" name="jabatan_pick_${Date.now()}" value="${i}" onchange="setJabatan('${j.replace(/'/g, "\'")}')">
+        <span>${j}</span>
+      </label>
+    `).join("")}
+  `;
+  jabatanDisp.parentNode.insertBefore(picker, jabatanDisp.nextSibling);
+}
+
+function setJabatan(jabatan) {
+  jabatanDisp.textContent = jabatan;
+  jabatanDisp.className = "jabatan-display";
+  // Remove picker after slight delay so radio click registers
+  setTimeout(() => {
+    document.querySelectorAll(".jabatan-picker").forEach(el => el.remove());
+  }, 200);
+}
+
+// ============================================================
+// TOGGLE
+// ============================================================
+function toggleKegiatan(val) {
+  const section  = document.getElementById("kegiatan-section");
+  const msg      = document.getElementById("no-kegiatan-msg");
+  document.getElementById("pill-ya").className    = "radio-pill" + (val==="ya"    ? " selected-yes" : "");
+  document.getElementById("pill-tidak").className = "radio-pill" + (val==="tidak" ? " selected-no"  : "");
+  if (val === "ya") {
+    section.style.display = "block"; msg.style.display = "none";
+    if (!document.getElementById("kegiatan-list").children.length) addKegiatan();
+  } else {
+    section.style.display = "none"; msg.style.display = "block";
+  }
+}
+
+// ============================================================
+// ADD KEGIATAN
+// ============================================================
+let kgCount = 0;
+function addKegiatan() {
+  kgCount++;
+  const id   = kgCount;
+  const list = document.getElementById("kegiatan-list");
+  const block = document.createElement("div");
+  block.className = "activity-block";
+  block.id = `kegiatan-${id}`;
+  block.innerHTML = `
+    <div class="activity-header">
+      <span>📋 Kegiatan ${id}</span>
+      ${id > 1 ? `<button class="remove-btn" onclick="removeKegiatan(${id})">Hapus</button>` : ""}
+    </div>
+    <div class="activity-body">
+
+      <label>Nama Kegiatan <span class="req">*</span></label>
+      <input type="text" id="nama_keg_${id}" placeholder="Contoh: Kumpul Sedulur Maret 2026">
+
+      <label>Tanggal Pelaksanaan <span class="req">*</span></label>
+      <input type="date" id="tgl_${id}" min="2026-01-01" max="2026-06-30">
+
+      <label>Estimasi Jumlah Peserta <span class="req">*</span>
+        <span class="hint">Perkiraan saja, tidak harus tepat</span>
+      </label>
+      <input type="number" id="peserta_${id}" placeholder="Contoh: 25" min="1">
+
+      <label>Jenis Peserta <span class="hint">Bisa pilih lebih dari satu</span></label>
+      <div class="checkbox-group">
+        ${["Pegawai Organik BI","Pegawai Pihak Ketiga","PPBI","PIPEBI","Keluarga Pegawai","Masyarakat Umum","Mitra / Komunitas Eksternal"]
+          .map(j=>`<label class="check-pill" onclick="togglePill(this)"><input type="checkbox" value="${j}">${j}</label>`).join("")}
+      </div>
+
+      <label>Deskripsi Singkat Kegiatan <span class="req">*</span>
+        <span class="hint">2–3 kalimat sudah cukup</span>
+      </label>
+      <textarea id="deskripsi_${id}" placeholder="Contoh: Kumpul Sedulur bulanan diisi dengan mini games, makan bersama, dan sesi Matur Kesuwun untuk apresiasi kolaborasi antar unit..."></textarea>
+
+      <hr class="divider">
+
+      <label style="font-size:13px; font-weight:700; color:var(--text); margin-bottom:10px;">
+        Kegiatan ini masuk ke Konkin mana? <span class="req">*</span>
+        <span class="hint">Pilih program dan sub-kegiatan yang relevan. Tombol "ⓘ Target" untuk lihat target resmi.</span>
+      </label>
+      ${renderKonkin(id)}
+
+      <hr class="divider">
+
+      <label style="font-size:13px; font-weight:700; margin-bottom:10px;">
+        Masuk ke Pilar GROW apa?
+        <span class="hint">Opsional — jika ingin link ke pilar Berkembang/Berdampak/Bergerak</span>
+      </label>
+      <div class="grow-programs" id="grow_${id}">
+        ${renderGrowOptions(id)}
+      </div>
+
+      <hr class="divider">
+
+      <label>Sudah diposting di <strong>@growatCirebon</strong>?</label>
+      <div class="radio-group">
+        <label class="radio-pill" onclick="toggleIg(this,'ya',${id})"><input type="radio" name="ig_${id}" value="ya"> ✅ Sudah</label>
+        <label class="radio-pill" onclick="toggleIg(this,'tidak',${id})"><input type="radio" name="ig_${id}" value="tidak"> ❌ Belum</label>
+        <label class="radio-pill" onclick="toggleIg(this,'unknown',${id})"><input type="radio" name="ig_${id}" value="unknown"> 🤷 Tidak tahu</label>
+      </div>
+
+      <label>Upload Dokumentasi
+        <span class="hint">Bisa lebih dari satu file · JPG, PNG, MP4, PDF · maks 10MB/file</span>
+      </label>
+      <div class="upload-area" id="upload_area_${id}" onclick="document.getElementById('file_dok_${id}').click()">
+        <div class="upload-icon">📎</div>
+        <div class="upload-text">Ketuk untuk pilih file</div>
+        <div class="upload-sub">JPG · PNG · MP4 · PDF · maks 10MB</div>
+      </div>
+      <input type="file" id="file_dok_${id}" multiple accept="image/*,video/mp4,.pdf" style="display:none" onchange="handleFiles(this,${id})">
+      <div class="file-list" id="file_list_${id}"></div>
+
+    </div>
+  `;
+  list.appendChild(block);
+}
+
+// ============================================================
+// RENDER KONKIN
+// ============================================================
+function renderKonkin(id) {
+  return Object.entries(KONKIN).map(([key, k]) => `
+    <div class="konkin-section" style="margin-bottom:10px;">
+      <div class="konkin-title ${k.color}" onclick="toggleKonkinDesc('desc_${key}_${id}')">
+        <span>${k.label}</span>
+        <button class="toggle-desc-btn" onclick="event.stopPropagation(); toggleKonkinDesc('desc_${key}_${id}')">ⓘ Target</button>
+      </div>
+      <div class="konkin-body">
+        <div class="konkin-desc" id="desc_${key}_${id}">
+          <div class="desc-header">🎯 Target Resmi KONKIN 2026</div>
+          <ul>${k.target.map(t=>`<li>${t}</li>`).join("")}</ul>
+          <div style="margin-top:6px; font-size:10px; color:var(--muted);">Pilar GROW: <strong>${k.pilar}</strong></div>
+        </div>
+        <div class="konkin-programs">
+          ${k.programs.map(p=>`
+            <div class="k-chip" data-konkin="${key}" data-prog="${p.id}" onclick="toggleKChip(this,'${key}')">
+              ${p.label}
+            </div>
+          `).join("")}
+        </div>
+      </div>
+    </div>
+  `).join("");
+}
+
+function toggleKonkinDesc(descId) {
+  const el = document.getElementById(descId);
+  if (el) el.classList.toggle("open");
+}
+
+function toggleKChip(el, konkin) {
+  el.classList.toggle(`sel-${konkin}`);
+}
+
+// ============================================================
+// RENDER GROW
+// ============================================================
+function renderGrowOptions(id) {
+  const pillars = [
+    { key:"berkembang", label:"🏙 BERKEMBANG — Kepemimpinan & Karir" },
+    { key:"berdampak",  label:"🤝 BERDAMPAK — Kolaborasi & Keluarga" },
+    { key:"bergerak",   label:"⚡ BERGERAK — Kesejahteraan Fisik, Mental & Finansial" },
+  ];
+  return pillars.map(p=>`
+    <div class="grow-pillar-group">
+      <div class="grow-pillar-title ${p.key}">${p.label}</div>
+      <div class="grow-options">
+        ${GROW_PROGRAMS[p.key].map(prog=>`
+          <div class="grow-chip" data-pillar="${p.key}" onclick="toggleGrow(this,'${p.key}')">${prog.label}</div>
+        `).join("")}
+      </div>
+    </div>
+  `).join("");
+}
+function toggleGrow(el, pillar) { el.classList.toggle(`selected-${pillar}`); }
+
+// ============================================================
+// HELPERS
+// ============================================================
+function togglePill(label) {
+  setTimeout(()=>{ label.classList.toggle("checked", label.querySelector("input").checked); }, 0);
+}
+function toggleIg(label, type, id) {
+  document.getElementById(`kegiatan-${id}`).querySelectorAll(`[name="ig_${id}"]`).forEach(r=>{
+    r.closest(".radio-pill").className = "radio-pill";
+  });
+  label.className = `radio-pill selected-${type === "ya" ? "yes" : type === "tidak" ? "no" : "unknown"}`;
+}
+function removeKegiatan(id) {
+  const el = document.getElementById(`kegiatan-${id}`);
+  if (el) el.remove();
+}
+
+function handleFiles(input, id) {
+  const fileList = document.getElementById(`file_list_${id}`);
+  const area     = document.getElementById(`upload_area_${id}`);
+  Array.from(input.files).forEach(file => {
+    if (file.size > 10 * 1024 * 1024) {
+      const err = document.createElement("div");
+      err.className = "file-error";
+      err.textContent = `⚠️ ${file.name} melebihi 10MB, dilewati.`;
+      fileList.appendChild(err);
+      setTimeout(()=>err.remove(), 4000);
+      return;
+    }
+    const item = document.createElement("div");
+    item.className = "file-item";
+    item.innerHTML = `<span class="file-name">✓ ${file.name}</span><span class="file-size">${(file.size/1048576).toFixed(1)} MB</span><button class="file-remove" onclick="this.closest('.file-item').remove(); updateUploadArea(${id})">✕</button>`;
+    fileList.appendChild(item);
+  });
+  updateUploadArea(id);
+  input.value = "";
+}
+function updateUploadArea(id) {
+  const area  = document.getElementById(`upload_area_${id}`);
+  const count = document.getElementById(`file_list_${id}`).querySelectorAll(".file-item").length;
+  area.querySelector(".upload-text").textContent = count > 0 ? `${count} file dipilih — ketuk untuk tambah lagi` : "Ketuk untuk pilih file";
+  area.classList.toggle("has-files", count > 0);
+}
+
+// ============================================================
+// SUBMIT
+// ============================================================
+async function submitForm() {
+  const nama = document.getElementById("nama-input").value.trim();
+  if (!nama) { alert("Mohon isi nama terlebih dahulu."); return; }
+
+  const adaKeg = document.querySelector('input[name="ada_kegiatan"]:checked');
+  if (!adaKeg) { alert("Mohon jawab apakah ada kegiatan atau tidak."); return; }
+
+  const payload = {
+    nama,
+    jabatan: document.getElementById("jabatan-display").textContent,
+    ada_kegiatan: adaKeg.value,
+    kegiatan: [],
+    timestamp: new Date().toISOString(),
+  };
+
+  if (adaKeg.value === "ya") {
+    document.querySelectorAll(".activity-block").forEach(block => {
+      const id      = block.id.split("-")[1];
+      const namaKeg = document.getElementById(`nama_keg_${id}`)?.value.trim();
+      if (!namaKeg) return;
+
+      // Konkin selections
+      const konkinSel = {};
+      block.querySelectorAll(".k-chip[class*='sel-']").forEach(c => {
+        const k = c.dataset.konkin;
+        if (!konkinSel[k]) konkinSel[k] = [];
+        konkinSel[k].push(c.textContent.trim());
+      });
+
+      // GROW selections
+      const grow = [];
+      block.querySelectorAll(".grow-chip[class*='selected-']").forEach(c => grow.push(c.textContent.trim()));
+
+      // Jenis peserta
+      const jenis = [];
+      block.querySelectorAll(".check-pill.checked input").forEach(i => jenis.push(i.value));
+
+      // Files
+      const files = Array.from(block.querySelectorAll(".file-list .file-name")).map(f=>f.textContent.replace("✓ ","").trim());
+
+      payload.kegiatan.push({
+        nama: namaKeg,
+        tanggal: document.getElementById(`tgl_${id}`)?.value,
+        peserta: document.getElementById(`peserta_${id}`)?.value,
+        jenis_peserta: jenis,
+        deskripsi: document.getElementById(`deskripsi_${id}`)?.value,
+        konkin: konkinSel,
+        grow_pilar: grow,
+        sudah_ig: block.querySelector(`[name="ig_${id}"]:checked`)?.value || "—",
+        files,
+      });
+    });
+
+    if (!payload.kegiatan.length) {
+      alert("Mohon isi minimal satu kegiatan, atau pilih 'Tidak ada kegiatan'.");
+      return;
+    }
+  }
+
+  // Send to Apps Script if URL is set
+  if (APPS_SCRIPT_URL) {
+    try {
+      const btn = document.querySelector(".btn-submit");
+      btn.textContent = "Mengirim..."; btn.disabled = true;
+      await fetch(APPS_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    } catch(e) { console.warn("Apps Script error:", e); }
+  } else {
+    console.log("FORM DATA (Apps Script URL belum diset):", JSON.stringify(payload, null, 2));
+  }
+
+  // Success screen
+  document.querySelector(".container").innerHTML = `
+    <div style="text-align:center; padding:48px 20px;">
+      <div style="width:64px;height:64px;background:#DCFCE7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:28px;">✓</div>
+      <h2 style="font-size:20px;margin-bottom:8px;">Laporan Terkirim!</h2>
+      <p style="color:#6B7280;font-size:14px;">Terima kasih, <strong>${nama}</strong>.<br>Data kamu sudah tercatat.<br><br>
+      Pertanyaan? Hubungi Sekretaris:<br><strong>Arie Andira Ferdiana</strong></p>
+    </div>
+  `;
+}
+</script>
+</body>
+</html>
