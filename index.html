@@ -258,6 +258,21 @@ textarea { resize:vertical; min-height:75px; }
 
 .no-kegiatan-msg { display:none; background:#FFF9E6; border:1px solid #F6D860; border-radius:8px; padding:11px 14px; font-size:13px; color:#854D0E; margin-bottom:14px; }
 
+/* GOOGLE FORM UPLOAD BOX */
+.upload-gform-box {
+  border:1.5px solid #BDD0FF; border-radius:10px; padding:16px 14px;
+  text-align:center; background:#F0F4FF; margin-bottom:10px;
+}
+.gform-icon { font-size:28px; margin-bottom:6px; }
+.gform-text { font-size:14px; font-weight:700; color:var(--blue); margin-bottom:4px; }
+.gform-sub  { font-size:11px; color:var(--muted); margin-bottom:12px; }
+.gform-btn  {
+  display:inline-block; background:var(--blue); color:white;
+  padding:9px 20px; border-radius:8px; font-size:13px; font-weight:700;
+  text-decoration:none; transition:opacity .15s;
+}
+.gform-btn:hover { opacity:.85; }
+
 /* JABATAN PICKER — hanya muncul untuk anggota multi-jabatan */
 .jabatan-picker {
   background:#FFF8E1; border:1.5px solid #FBC02D; border-radius:8px;
@@ -368,7 +383,7 @@ textarea { resize:vertical; min-height:75px; }
 // ============================================================
 // GANTI INI dengan URL dari Google Apps Script setelah deploy
 // ============================================================
-const APPS_SCRIPT_URL = ""; // contoh: "https://script.google.com/macros/s/XXXXX/exec"
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwuZeSMxlY0P_Z52i6ZNRaB3NLsD99nixDZ98Vq_eYio0hktDWqabWFAeg43BIIoza6/exec";
 
 // ============================================================
 // DATA ANGGOTA
@@ -739,16 +754,25 @@ function addKegiatan() {
         <label class="radio-pill" onclick="toggleIg(this,'unknown',${id})"><input type="radio" name="ig_${id}" value="unknown"> 🤷 Tidak tahu</label>
       </div>
 
-      <label>Upload Dokumentasi
-        <span class="hint">Bisa lebih dari satu file · JPG, PNG, MP4, PDF · maks 10MB/file</span>
+      <label>Dokumentasi Kegiatan
+        <span class="hint">Upload foto/video ke Google Form khusus dokumentasi — klik tombol di bawah</span>
       </label>
-      <div class="upload-area" id="upload_area_${id}" onclick="document.getElementById('file_dok_${id}').click()">
-        <div class="upload-icon">📎</div>
-        <div class="upload-text">Ketuk untuk pilih file</div>
-        <div class="upload-sub">JPG · PNG · MP4 · PDF · maks 10MB</div>
+      <div class="upload-gform-box">
+        <div class="gform-icon">📸</div>
+        <div class="gform-text">Upload foto & video via Google Form</div>
+        <div class="gform-sub">Foto akan tersimpan langsung ke Google Drive IPEBI Cirebon</div>
+        <a class="gform-btn" href="https://docs.google.com/forms/d/e/1FAIpQLScvbegsZXv4gdZ3S2CF2sapbJBXugqMoZAtpTnoXCZeVLU_SQ/viewform" target="_blank" rel="noopener">
+          Buka Form Upload Dokumentasi ↗
+        </a>
       </div>
-      <input type="file" id="file_dok_${id}" multiple accept="image/*,video/mp4,.pdf" style="display:none" onchange="handleFiles(this,${id})">
-      <div class="file-list" id="file_list_${id}"></div>
+      <div style="margin-top:8px;">
+        <label>Sudah upload dokumentasi?</label>
+        <div class="radio-group">
+          <label class="radio-pill" onclick="toggleDok(this,'ya',${id})"><input type="radio" name="dok_${id}" value="ya"> ✅ Sudah upload</label>
+          <label class="radio-pill" onclick="toggleDok(this,'belum',${id})"><input type="radio" name="dok_${id}" value="belum"> ⏳ Belum, nanti</label>
+          <label class="radio-pill" onclick="toggleDok(this,'tidak',${id})"><input type="radio" name="dok_${id}" value="tidak"> ❌ Tidak ada dokumentasi</label>
+        </div>
+      </div>
 
     </div>
   `;
@@ -831,31 +855,14 @@ function removeKegiatan(id) {
   if (el) el.remove();
 }
 
-function handleFiles(input, id) {
-  const fileList = document.getElementById(`file_list_${id}`);
-  const area     = document.getElementById(`upload_area_${id}`);
-  Array.from(input.files).forEach(file => {
-    if (file.size > 10 * 1024 * 1024) {
-      const err = document.createElement("div");
-      err.className = "file-error";
-      err.textContent = `⚠️ ${file.name} melebihi 10MB, dilewati.`;
-      fileList.appendChild(err);
-      setTimeout(()=>err.remove(), 4000);
-      return;
-    }
-    const item = document.createElement("div");
-    item.className = "file-item";
-    item.innerHTML = `<span class="file-name">✓ ${file.name}</span><span class="file-size">${(file.size/1048576).toFixed(1)} MB</span><button class="file-remove" onclick="this.closest('.file-item').remove(); updateUploadArea(${id})">✕</button>`;
-    fileList.appendChild(item);
+function toggleDok(label, type, id) {
+  const block = document.getElementById(`kegiatan-${id}`);
+  if (!block) return;
+  block.querySelectorAll(`[name="dok_${id}"]`).forEach(r => {
+    r.closest(".radio-pill").className = "radio-pill";
   });
-  updateUploadArea(id);
-  input.value = "";
-}
-function updateUploadArea(id) {
-  const area  = document.getElementById(`upload_area_${id}`);
-  const count = document.getElementById(`file_list_${id}`).querySelectorAll(".file-item").length;
-  area.querySelector(".upload-text").textContent = count > 0 ? `${count} file dipilih — ketuk untuk tambah lagi` : "Ketuk untuk pilih file";
-  area.classList.toggle("has-files", count > 0);
+  const cls = type === "ya" ? "selected-yes" : type === "tidak" ? "selected-no" : "selected-unknown";
+  label.className = `radio-pill ${cls}`;
 }
 
 // ============================================================
@@ -910,7 +917,7 @@ async function submitForm() {
         konkin: konkinSel,
         grow_pilar: grow,
         sudah_ig: block.querySelector(`[name="ig_${id}"]:checked`)?.value || "—",
-        files,
+        status_dokumentasi: block.querySelector(`[name="dok_${id}"]:checked`)?.value || "—",
       });
     });
 
