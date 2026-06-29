@@ -247,14 +247,7 @@ textarea { resize:vertical; min-height:75px; }
 }
 .btn-submit:hover { opacity:.9; }
 
-/* SETUP BANNER */
-.setup-banner {
-  background:#FFFBEB; border:1.5px solid #FCD34D; border-radius:var(--radius);
-  padding:14px 16px; margin-bottom:16px; font-size:12px; color:#92400E;
-}
-.setup-banner strong { display:block; font-size:13px; margin-bottom:6px; color:#78350F; }
-.setup-banner ol { padding-left:16px; line-height:1.8; }
-.setup-banner code { background:#FEF3C7; padding:1px 5px; border-radius:4px; font-family:monospace; font-size:11px; }
+
 
 .no-kegiatan-msg { display:none; background:#FFF9E6; border:1px solid #F6D860; border-radius:8px; padding:11px 14px; font-size:13px; color:#854D0E; margin-bottom:14px; }
 
@@ -321,18 +314,7 @@ textarea { resize:vertical; min-height:75px; }
 
 <div class="container">
 
-  <!-- SETUP BANNER -->
-  <div class="setup-banner" id="setup-banner">
-    <strong>⚙️ Setup Google Drive (lakukan sekali sebelum disebar)</strong>
-    Untuk menyimpan data ke Google Sheets dan file ke Google Drive:<br>
-    1. Buka <code>script.google.com</code> → New Project<br>
-    2. Copy kode Apps Script dari file <code>apps_script_backend.gs</code> yang disertakan<br>
-    3. Deploy → Web App → Anyone → Copy URL<br>
-    4. Tempel URL ke variabel <code>APPS_SCRIPT_URL</code> di bawah (baris ~580)<br>
-    5. Hapus banner ini dari HTML setelah selesai
-    <br><br>
-    <a href="#" onclick="document.getElementById('setup-banner').style.display='none'; return false;" style="color:#78350F; font-weight:700;">✕ Tutup banner ini</a>
-  </div>
+
 
   <!-- IDENTITAS -->
   <div class="section-label">01 — Identitas Pelapor</div>
@@ -944,12 +926,20 @@ async function submitForm() {
   }
 
   // Success screen
+  const formUrl = window.location.href;
   document.querySelector(".container").innerHTML = `
     <div style="text-align:center; padding:48px 20px;">
       <div style="width:64px;height:64px;background:#DCFCE7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:28px;">✓</div>
       <h2 style="font-size:20px;margin-bottom:8px;">Laporan Terkirim!</h2>
-      <p style="color:#6B7280;font-size:14px;">Terima kasih, <strong>${nama}</strong>.<br>Data kamu sudah tercatat.<br><br>
-      Pertanyaan? Hubungi Sekretaris:<br><strong>Arie Andira Ferdiana</strong></p>
+      <p style="color:#6B7280;font-size:14px;">Terima kasih, <strong>${nama}</strong>.<br>Data kamu sudah tercatat.</p>
+      <div style="margin-top:24px;">
+        <a href="${formUrl}" style="display:inline-block;background:#F3F4F6;color:#1B3F6E;
+          padding:10px 24px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:700;
+          border:1.5px solid #1B3F6E;">
+          ← Kembali ke Form (isi kegiatan lain)
+        </a>
+      </div>
+      <p style="color:#9CA3AF;font-size:11px;margin-top:20px;">Pertanyaan? Hubungi Sekretaris:<br><strong>Arie Andira Ferdiana</strong></p>
     </div>
   `;
 }
